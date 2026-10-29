@@ -1,0 +1,71 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAdmin() {
+      return request.auth != null
+        && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    function str(v, min, max) {
+      return v is string && v.size() >= min && v.size() <= max;
+    }
+
+    // Liste des administrateurs : créée à la main dans la console Firebase.
+    match /admins/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    // Compteur des numéros de fiche (FS000001, FS000002, ...) : +1 uniquement.
+    match /meta/compteur {
+      allow read: if true;
+      allow create: if request.resource.data.keys().hasOnly(['count'])
+        && request.resource.data.count == 1;
+      allow update: if request.resource.data.keys().hasOnly(['count'])
+        && request.resource.data.count == resource.data.count + 1;
+    }
+
+    // Nombre total de visites : +1 uniquement.
+    match /meta/visites {
+      allow read: if isAdmin();
+      allow create: if request.resource.data.keys().hasOnly(['total'])
+        && request.resource.data.total == 1;
+      allow update: if request.resource.data.keys().hasOnly(['total'])
+        && request.resource.data.total == resource.data.total + 1;
+    }
+
+    // Présence des visiteurs (personnes connectées en ce moment).
+    match /presence/{sid} {
+      allow read, delete: if isAdmin();
+      allow create, update: if sid.size() <= 64
+        && request.resource.data.keys().hasOnly(['lastSeen', 'page'])
+        && request.resource.data.lastSeen == request.time
+        && str(request.resource.data.page, 1, 30);
+    }
+
+    // Fiches de souscription : tout le monde peut en créer, seul l'admin les lit.
+    match /souscriptions/{id} {
+      allow read, delete: if isAdmin();
+      allow update: if false;
+      allow create: if request.resource.data.keys().hasOnly(
+            ['nom', 'prenoms', 'sexe', 'contact', 'lieu', 'profession', 'fonction',
+             'statut', 'montant', 'seq', 'numero', 'createdAt'])
+        && str(request.resource.data.nom, 1, 80)
+        && str(request.resource.data.prenoms, 1, 120)
+        && request.resource.data.sexe in ['F', 'M']
+        && str(request.resource.data.contact, 8, 25)
+        && str(request.resource.data.lieu, 1, 100)
+        && str(request.resource.data.profession, 1, 100)
+        && str(request.resource.data.fonction, 0, 100)
+        && str(request.resource.data.statut, 1, 40)
+        && request.resource.data.montant is int
+        && request.resource.data.montant >= 100
+        && request.resource.data.montant <= 1000000000
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.numero == id
+        && request.resource.data.seq == getAfter(/databases/$(database)/documents/meta/compteur).data.count
+        && !exists(/databases/$(database)/documents/souscriptions/$(id));
+    }
+  }
+}

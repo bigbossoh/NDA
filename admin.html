@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>Administration · Souscriptions NDA</title>
+  <link rel="icon" href="assets/logo-nda.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <script src="js/tailwind-config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    .bg-halo {
+      background:
+        radial-gradient(900px 500px at 0% 0%, rgba(212,169,68,.16), transparent 60%),
+        linear-gradient(135deg, #141c3b 0%, #1e2b5c 60%, #304494 100%);
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-marie-50 font-sans text-slate-800 antialiased">
+
+  <!-- Connexion -->
+  <section id="login-view" class="bg-halo hidden min-h-screen items-center justify-center px-4 py-12">
+    <div class="w-full max-w-md">
+      <div class="mb-8 flex flex-col items-center text-center text-white">
+        <img src="assets/logo-nda.png" alt="Logo de la Paroisse Notre-Dame de l'Assomption" class="h-20 w-20 rounded-full bg-white object-contain p-1 ring-4 ring-or-300/40" />
+        <h1 class="mt-5 font-serif text-4xl font-semibold">Espace administrateur</h1>
+        <p class="mt-2 text-sm text-marie-100/80">Suivi des souscriptions · Année du Consacré</p>
+      </div>
+      <form id="login-form" class="rounded-3xl bg-white p-8 shadow-2xl" novalidate>
+        <div id="demo-hint" class="mb-5 hidden rounded-xl border border-or-200 bg-or-50 px-4 py-3 text-sm text-or-700">
+          <strong>Mode démo :</strong> mot de passe <code class="font-semibold">admin</code>.
+        </div>
+        <label for="email" class="mb-1.5 block text-sm font-medium text-marie-900">Adresse e-mail</label>
+        <input id="email" type="email" autocomplete="username" required
+          class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition focus:border-marie-500 focus:bg-white focus:ring-4 focus:ring-marie-100" />
+        <label for="password" class="mb-1.5 mt-4 block text-sm font-medium text-marie-900">Mot de passe</label>
+        <input id="password" type="password" autocomplete="current-password" required
+          class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition focus:border-marie-500 focus:bg-white focus:ring-4 focus:ring-marie-100" />
+        <p id="login-error" role="alert" class="mt-4 hidden rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700"></p>
+        <button id="login-btn" type="submit"
+          class="mt-6 w-full rounded-xl bg-gradient-to-r from-marie-900 to-marie-700 px-6 py-3.5 font-semibold text-white shadow-lg transition hover:from-marie-800 hover:to-marie-600 focus:outline-none focus-visible:ring-4 focus-visible:ring-or-300 disabled:opacity-60">
+          Se connecter
+        </button>
+        <a href="./" class="mt-4 block text-center text-sm text-marie-700 hover:underline">← Retour au formulaire</a>
+      </form>
+    </div>
+  </section>
+
+  <!-- Tableau de bord -->
+  <div id="dash-view" class="hidden">
+    <header class="bg-halo text-white">
+      <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-5 sm:px-6">
+        <div class="flex items-center gap-3">
+          <img src="assets/logo-nda.png" alt="" class="h-11 w-11 rounded-full bg-white object-contain p-0.5" />
+          <div>
+            <p class="font-serif text-xl font-semibold leading-tight sm:text-2xl">Tableau de bord</p>
+            <p class="text-xs text-marie-100/80">Souscriptions 2026 – 2027</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <span id="admin-email" class="hidden text-sm text-marie-100 md:inline"></span>
+          <button id="logout" class="rounded-full border border-white/25 px-4 py-2 text-sm font-medium transition hover:bg-white/10">Déconnexion</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-7xl px-4 py-8 sm:px-6">
+      <div id="demo-banner" class="mb-6 hidden rounded-xl border border-or-200 bg-or-50 px-4 py-3 text-sm text-or-700">
+        <strong>Mode démo :</strong> les chiffres affichés proviennent uniquement de ce navigateur. Configurez Firebase pour partager les données (voir README).
+      </div>
+      <div id="dash-error" role="alert" class="mb-6 hidden rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700"></div>
+
+      <!-- Indicateurs -->
+      <section aria-label="Indicateurs clés" class="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <article class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-marie-100">
+          <p class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
+            <span class="relative flex h-2.5 w-2.5"><span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500"></span></span>
+            En ligne
+          </p>
+          <p id="k-online" class="mt-3 text-3xl font-bold text-marie-900">–</p>
+          <p class="mt-1 text-xs text-slate-500">visiteurs actifs sur le formulaire</p>
+        </article>
+        <article class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-marie-100">
+          <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Visites</p>
+          <p id="k-visites" class="mt-3 text-3xl font-bold text-marie-900">–</p>
+          <p class="mt-1 text-xs text-slate-500">sessions depuis l'ouverture</p>
+        </article>
+        <article class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-marie-100">
+          <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Souscripteurs</p>
+          <p id="k-total" class="mt-3 text-3xl font-bold text-marie-900">–</p>
+          <p id="k-conv" class="mt-1 text-xs text-slate-500">fiches renseignées</p>
+        </article>
+        <article class="rounded-2xl bg-gradient-to-br from-or-400 to-or-600 p-5 text-white shadow-sm">
+          <p class="text-xs font-semibold uppercase tracking-wider text-white/80">Montant total</p>
+          <p id="k-montant" class="mt-3 text-2xl font-bold sm:text-3xl">–</p>
+          <p id="k-moyen" class="mt-1 text-xs text-white/85">FCFA</p>
+        </article>
+        <article class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-marie-100">
+          <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Femmes</p>
+          <p id="k-femmes" class="mt-3 text-3xl font-bold text-rose-600">–</p>
+          <p id="k-femmes-m" class="mt-1 text-xs text-slate-500">&nbsp;</p>
+        </article>
+        <article class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-marie-100">
+          <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Hommes</p>
+          <p id="k-hommes" class="mt-3 text-3xl font-bold text-marie-700">–</p>
+          <p id="k-hommes-m" class="mt-1 text-xs text-slate-500">&nbsp;</p>
+        </article>
+        <article class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-marie-100">
+          <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Aujourd'hui</p>
+          <p id="k-today" class="mt-3 text-3xl font-bold text-marie-900">–</p>
+          <p class="mt-1 text-xs text-slate-500">nouvelles souscriptions</p>
+        </article>
+        <article class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-marie-100">
+          <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Plus haut montant</p>
+          <p id="k-max" class="mt-3 text-2xl font-bold text-marie-900 sm:text-3xl">–</p>
+          <p class="mt-1 text-xs text-slate-500">FCFA</p>
+        </article>
+      </section>
+
+      <!-- Graphiques -->
+      <section class="mt-8 grid gap-6 lg:grid-cols-3">
+        <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-marie-100">
+          <h2 class="font-serif text-xl font-semibold text-marie-900">Répartition par sexe</h2>
+          <div class="relative mt-4 h-64"><canvas id="c-sexe" role="img" aria-label="Répartition des souscripteurs par sexe"></canvas></div>
+        </article>
+        <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-marie-100 lg:col-span-2">
+          <h2 class="font-serif text-xl font-semibold text-marie-900">Évolution des souscriptions</h2>
+          <div class="relative mt-4 h-64"><canvas id="c-jours" role="img" aria-label="Nombre de souscriptions par jour"></canvas></div>
+        </article>
+        <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-marie-100 lg:col-span-1">
+          <h2 class="font-serif text-xl font-semibold text-marie-900">Statut actuel</h2>
+          <div class="relative mt-4 h-64"><canvas id="c-statut" role="img" aria-label="Souscripteurs par statut"></canvas></div>
+        </article>
+        <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-marie-100 lg:col-span-2">
+          <h2 class="font-serif text-xl font-semibold text-marie-900">Lieux d'habitation (top 8)</h2>
+          <div class="relative mt-4 h-64"><canvas id="c-lieux" role="img" aria-label="Souscripteurs par lieu d'habitation"></canvas></div>
+        </article>
+      </section>
+
+      <!-- Tableau -->
+      <section class="mt-8 rounded-2xl bg-white shadow-sm ring-1 ring-marie-100">
+        <div class="flex flex-col gap-3 border-b border-marie-100 p-5 sm:flex-row sm:items-center sm:justify-between">
+          <h2 class="font-serif text-xl font-semibold text-marie-900">Liste des souscripteurs <span id="count-label" class="font-sans text-sm font-normal text-slate-500"></span></h2>
+          <div class="flex flex-wrap gap-2">
+            <label for="search" class="sr-only">Rechercher</label>
+            <input id="search" type="search" placeholder="Rechercher…" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm outline-none focus:border-marie-500 focus:ring-4 focus:ring-marie-100 sm:w-56" />
+            <label for="filter-sexe" class="sr-only">Filtrer par sexe</label>
+            <select id="filter-sexe" class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none focus:border-marie-500">
+              <option value="">Tous</option>
+              <option value="F">Femmes</option>
+              <option value="M">Hommes</option>
+            </select>
+            <button id="export" class="rounded-xl bg-marie-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-marie-800">Exporter CSV</button>
+          </div>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full min-w-[900px] text-left text-sm">
+            <thead class="bg-marie-50 text-xs uppercase tracking-wider text-slate-500">
+              <tr>
+                <th class="px-4 py-3 font-semibold">N°</th>
+                <th class="px-4 py-3 font-semibold">Nom &amp; prénoms</th>
+                <th class="px-4 py-3 font-semibold">Sexe</th>
+                <th class="px-4 py-3 font-semibold">Contact</th>
+                <th class="px-4 py-3 font-semibold">Lieu</th>
+                <th class="px-4 py-3 font-semibold">Profession</th>
+                <th class="px-4 py-3 font-semibold">Fonction</th>
+                <th class="px-4 py-3 font-semibold">Statut</th>
+                <th class="px-4 py-3 text-right font-semibold">Montant</th>
+                <th class="px-4 py-3 font-semibold">Date</th>
+                <th class="px-4 py-3"><span class="sr-only">Actions</span></th>
+              </tr>
+            </thead>
+            <tbody id="tbody" class="divide-y divide-slate-100"></tbody>
+          </table>
+        </div>
+        <p id="empty" class="hidden p-10 text-center text-sm text-slate-500">Aucune souscription pour le moment.</p>
+      </section>
+    </main>
+  </div>
+
+  <script type="module">
+    import { store, MODE, REF_PREFIX } from "./js/store.js";
+
+    const $ = (id) => document.getElementById(id);
+    const fcfa = new Intl.NumberFormat("fr-FR");
+    const dateFmt = new Intl.DateTimeFormat("fr-FR", { dateStyle: "short", timeStyle: "short" });
+    const COLORS = { F: "#e11d48", M: "#3652b5", gold: "#c4912f", navy: "#1e2b5c" };
+
+    let rows = [];
+    let unsubscribe = null;
+    let presenceTimer = null;
+    const charts = {};
+
+    if (MODE === "demo") {
+      $("demo-hint").classList.remove("hidden");
+      $("demo-banner").classList.remove("hidden");
+    }
+
+    /* ---------- Authentification ---------- */
+    store.onAuth((user, isAdmin) => {
+      const showDash = user && isAdmin;
+      $("login-view").classList.toggle("hidden", !!showDash);
+      $("login-view").classList.toggle("flex", !showDash);
+      $("dash-view").classList.toggle("hidden", !showDash);
+      if (user && !isAdmin) {
+        loginError("Ce compte n'a pas les droits administrateur.");
+        store.logout();
+      }
+      if (showDash) startDashboard(user);
+      else stopDashboard();
+    });
+
+    function loginError(msg) {
+      $("login-error").textContent = msg;
+      $("login-error").classList.toggle("hidden", !msg);
+    }
+
+    $("login-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      loginError("");
+      $("login-btn").disabled = true;
+      try {
+        await store.login($("email").value.trim(), $("password").value);
+      } catch (err) {
+        loginError(
+          err.code === "auth/too-many-requests"
+            ? "Trop de tentatives. Réessayez dans quelques minutes."
+            : "Adresse e-mail ou mot de passe incorrect."
+        );
+      } finally {
+        $("login-btn").disabled = false;
+      }
+    });
+
+    $("logout").addEventListener("click", () => store.logout());
+
+    /* ---------- Tableau de bord ---------- */
+    async function startDashboard(user) {
+      $("admin-email").textContent = user.email || "";
+      unsubscribe?.();
+      unsubscribe = await store.watchSouscriptions(
+        (list) => { rows = list; render(); },
+        (err) => showDashError("Lecture des données impossible : " + err.message)
+      );
+      refreshPresence();
+      clearInterval(presenceTimer);
+      presenceTimer = setInterval(refreshPresence, 15_000);
+      store.cleanupPresence().catch(() => {});
+    }
+
+    function stopDashboard() {
+      unsubscribe?.();
+      unsubscribe = null;
+      clearInterval(presenceTimer);
+    }
+
+    function showDashError(msg) {
+      $("dash-error").textContent = msg;
+      $("dash-error").classList.remove("hidden");
+    }
+
+    let lastVisites = 0;
+    async function refreshPresence() {
+      try {
+        const { online, visites } = await store.presenceStats();
+        $("k-online").textContent = online;
+        $("k-visites").textContent = fcfa.format(visites);
+        lastVisites = visites;
+        updateConversion();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function updateConversion() {
+      if (!lastVisites) return;
+      const pct = Math.min(100, Math.round((rows.length / lastVisites) * 100));
+      $("k-conv").textContent = `fiches renseignées · ${pct} % des visites`;
+    }
+
+    function render() {
+      const total = rows.length;
+      const f = rows.filter((r) => r.sexe === "F");
+      const m = rows.filter((r) => r.sexe === "M");
+      const sum = (list) => list.reduce((s, r) => s + (Number(r.montant) || 0), 0);
+      const montant = sum(rows);
+      const today = new Date().toDateString();
+
+      $("k-total").textContent = fcfa.format(total);
+      $("k-femmes").textContent = fcfa.format(f.length);
+      $("k-hommes").textContent = fcfa.format(m.length);
+      $("k-femmes-m").textContent = total ? `${Math.round((f.length / total) * 100)} % · ${fcfa.format(sum(f))} FCFA` : " ";
+      $("k-hommes-m").textContent = total ? `${Math.round((m.length / total) * 100)} % · ${fcfa.format(sum(m))} FCFA` : " ";
+      $("k-montant").textContent = fcfa.format(montant);
+      $("k-moyen").textContent = total ? `FCFA · moyenne ${fcfa.format(Math.round(montant / total))}` : "FCFA";
+      $("k-today").textContent = rows.filter((r) => r.createdAt.toDateString() === today).length;
+      $("k-max").textContent = total ? fcfa.format(Math.max(...rows.map((r) => Number(r.montant) || 0))) : "0";
+      updateConversion();
+
+      renderCharts(f.length, m.length);
+      renderTable();
+    }
+
+    function countBy(key, normalize = (v) => v) {
+      const map = new Map();
+      for (const r of rows) {
+        const k = normalize(r[key] || "Non renseigné");
+        map.set(k, (map.get(k) || 0) + 1);
+      }
+      return [...map.entries()].sort((a, b) => b[1] - a[1]);
+    }
+
+    function upsertChart(id, config) {
+      if (charts[id]) {
+        charts[id].data = config.data;
+        charts[id].update();
+      } else {
+        charts[id] = new Chart($(id), config);
+      }
+    }
+
+    function renderCharts(nf, nm) {
+      Chart.defaults.font.family = "Inter, system-ui, sans-serif";
+      Chart.defaults.color = "#64748b";
+
+      upsertChart("c-sexe", {
+        type: "doughnut",
+        data: { labels: ["Femmes", "Hommes"], datasets: [{ data: [nf, nm], backgroundColor: [COLORS.F, COLORS.M], borderWidth: 0 }] },
+        options: { maintainAspectRatio: false, cutout: "68%", plugins: { legend: { position: "bottom" } } },
+      });
+
+      // 30 derniers jours
+      const days = [];
+      for (let i = 29; i >= 0; i--) {
+        const d = new Date();
+        d.setHours(0, 0, 0, 0);
+        d.setDate(d.getDate() - i);
+        days.push(d);
+      }
+      const perDay = days.map((d) => rows.filter((r) => r.createdAt.toDateString() === d.toDateString()).length);
+      upsertChart("c-jours", {
+        type: "line",
+        data: {
+          labels: days.map((d) => d.toLocaleDateString("fr-FR", { day: "2-digit", month: "short" })),
+          datasets: [{ label: "Souscriptions", data: perDay, borderColor: COLORS.navy, backgroundColor: "rgba(54,82,181,.12)", fill: true, tension: 0.35, pointRadius: 2 }],
+        },
+        options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } }, x: { grid: { display: false } } } },
+      });
+
+      const statut = countBy("statut");
+      upsertChart("c-statut", {
+        type: "bar",
+        data: { labels: statut.map((s) => s[0]), datasets: [{ data: statut.map((s) => s[1]), backgroundColor: COLORS.gold, borderRadius: 6 }] },
+        options: { indexAxis: "y", maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, ticks: { precision: 0 } }, y: { grid: { display: false } } } },
+      });
+
+      const lieux = countBy("lieu", (v) => v.trim().toLowerCase().replace(/(^|\s)\S/g, (c) => c.toUpperCase())).slice(0, 8);
+      upsertChart("c-lieux", {
+        type: "bar",
+        data: { labels: lieux.map((s) => s[0]), datasets: [{ data: lieux.map((s) => s[1]), backgroundColor: COLORS.M, borderRadius: 6 }] },
+        options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } }, x: { grid: { display: false } } } },
+      });
+    }
+
+    function filtered() {
+      const q = $("search").value.trim().toLowerCase();
+      const sx = $("filter-sexe").value;
+      return rows.filter((r) =>
+        (!sx || r.sexe === sx) &&
+        (!q || [r.numero, r.nom, r.prenoms, r.contact, r.lieu, r.profession, r.fonction, r.statut].join(" ").toLowerCase().includes(q))
+      );
+    }
+
+    function td(text, cls = "") {
+      const el = document.createElement("td");
+      el.className = "px-4 py-3 " + cls;
+      el.textContent = text;
+      return el;
+    }
+
+    function renderTable() {
+      const list = filtered();
+      $("count-label").textContent = `(${list.length})`;
+      $("empty").classList.toggle("hidden", list.length > 0);
+      $("tbody").replaceChildren(...list.map((r) => {
+        const tr = document.createElement("tr");
+        tr.className = "hover:bg-marie-50/60";
+        const sexe = td("");
+        const badge = document.createElement("span");
+        badge.className = "rounded-full px-2.5 py-0.5 text-xs font-semibold " + (r.sexe === "F" ? "bg-rose-50 text-rose-700" : "bg-marie-100 text-marie-800");
+        badge.textContent = r.sexe === "F" ? "Femme" : "Homme";
+        sexe.append(badge);
+
+        const actions = td("", "text-right");
+        const del = document.createElement("button");
+        del.className = "rounded-lg px-2 py-1 text-xs font-medium text-red-600 hover:bg-red-50";
+        del.textContent = "Supprimer";
+        del.setAttribute("aria-label", `Supprimer la souscription ${r.numero}`);
+        del.addEventListener("click", async () => {
+          if (!confirm(`Supprimer définitivement la fiche ${r.numero} (${r.nom} ${r.prenoms}) ?`)) return;
+          try { await store.remove(r.id); } catch (err) { showDashError("Suppression impossible : " + err.message); }
+        });
+        actions.append(del);
+
+        tr.append(
+          td(r.numero, "whitespace-nowrap font-mono text-xs font-semibold text-marie-800"),
+          td(`${r.nom} ${r.prenoms}`, "font-medium text-marie-900"),
+          sexe,
+          td(r.contact, "whitespace-nowrap"),
+          td(r.lieu),
+          td(r.profession),
+          td(r.fonction || "—", "text-slate-500"),
+          td(r.statut),
+          td(fcfa.format(r.montant), "whitespace-nowrap text-right font-semibold"),
+          td(dateFmt.format(r.createdAt), "whitespace-nowrap text-slate-500"),
+          actions
+        );
+        return tr;
+      }));
+    }
+
+    $("search").addEventListener("input", renderTable);
+    $("filter-sexe").addEventListener("change", renderTable);
+
+    $("export").addEventListener("click", () => {
+      const head = ["Référence", "Nom", "Prénoms", "Sexe", "Contact", "Lieu d'habitation", "Emploi ou profession", "Fonction", "Statut actuel", "Montant souscrit (FCFA)", "Date"];
+      const esc = (v) => `"${String(v ?? "").replace(/"/g, '""')}"`;
+      const lines = filtered().map((r) => [
+        REF_PREFIX + " " + r.numero, r.nom, r.prenoms, r.sexe === "F" ? "Femme" : "Homme", r.contact, r.lieu,
+        r.profession, r.fonction, r.statut, r.montant, dateFmt.format(r.createdAt),
+      ].map(esc).join(";"));
+      const blob = new Blob(["﻿" + [head.map(esc).join(";"), ...lines].join("\r\n")], { type: "text/csv;charset=utf-8" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `souscriptions-nda-${new Date().toISOString().slice(0, 10)}.csv`;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    });
+  </script>
+</body>
+</html>

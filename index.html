@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fiche de souscription · Paroisse Notre-Dame de l'Assomption</title>
+  <meta name="description" content="Fiche de souscription en ligne de la Paroisse Notre-Dame de l'Assomption de Koumassi Prodomo — Année du Consacré 2026-2027." />
+  <link rel="icon" href="assets/logo-nda.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <script src="js/tailwind-config.js"></script>
+  <style>
+    .bg-halo {
+      background:
+        radial-gradient(1200px 500px at 50% -10%, rgba(212,169,68,.18), transparent 60%),
+        radial-gradient(900px 600px at 100% 0%, rgba(85,127,211,.25), transparent 60%),
+        linear-gradient(180deg, #141c3b 0%, #1e2b5c 55%, #304494 100%);
+    }
+    @media print {
+      body { background: #fff !important; }
+      .no-print { display: none !important; }
+      .print-card { box-shadow: none !important; border: 1px solid #ccc; }
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-marie-50 font-sans text-slate-800 antialiased">
+
+  <!-- En-tête -->
+  <header class="bg-halo text-white no-print">
+    <div class="mx-auto max-w-5xl px-4 pb-28 pt-6 sm:px-6">
+      <nav class="flex items-center justify-between">
+        <a href="./" class="flex items-center gap-3">
+          <img src="assets/logo-nda.png" alt="Logo de la Paroisse Notre-Dame de l'Assomption" class="h-12 w-12 rounded-full bg-white object-contain p-0.5 ring-2 ring-or-300/70" />
+          <span class="hidden text-sm font-medium leading-tight text-marie-100 sm:block">Paroisse Notre-Dame<br />de l'Assomption</span>
+        </a>
+      </nav>
+
+      <div class="mt-12 flex flex-col items-center text-center">
+        <img src="assets/logo-annee-consacre.png" alt="Logo Année du Consacré — Service et Sanctification" class="h-28 w-28 rounded-full shadow-2xl ring-4 ring-white/10 sm:h-32 sm:w-32" />
+        <p class="mt-6 text-xs font-semibold uppercase tracking-[0.3em] text-or-300">Année du Consacré · 2026 – 2027</p>
+        <h1 class="mt-3 font-serif text-4xl font-semibold sm:text-6xl">Fiche de souscription</h1>
+        <p class="mt-4 max-w-xl text-marie-100/90">Paroisse Notre-Dame de l'Assomption de Koumassi Prodomo. Merci de renseigner vos informations pour enregistrer votre engagement.</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="mx-auto -mt-20 max-w-3xl px-4 pb-16 sm:px-6">
+
+    <!-- Formulaire -->
+    <section id="form-card" class="rounded-3xl bg-white p-6 shadow-xl shadow-marie-900/10 ring-1 ring-marie-100 sm:p-10">
+      <div id="demo-banner" class="mb-6 hidden rounded-xl border border-or-200 bg-or-50 px-4 py-3 text-sm text-or-700">
+        <strong>Mode démo :</strong> Firebase n'est pas encore configuré, les données restent dans ce navigateur.
+      </div>
+
+      <div class="flex flex-wrap items-baseline justify-between gap-2 border-b border-marie-100 pb-5">
+        <h2 class="font-serif text-2xl font-semibold text-marie-900">Vos informations</h2>
+        <p class="text-xs text-slate-500">Les champs marqués <span class="text-or-600">*</span> sont obligatoires</p>
+      </div>
+
+      <form id="form" class="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2" novalidate>
+        <div>
+          <label for="nom" class="mb-1.5 block text-sm font-medium text-marie-900">Nom <span class="text-or-600">*</span></label>
+          <input id="nom" name="nom" required maxlength="80" autocomplete="family-name"
+            class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 uppercase outline-none transition focus:border-marie-500 focus:bg-white focus:ring-4 focus:ring-marie-100" />
+        </div>
+        <div>
+          <label for="prenoms" class="mb-1.5 block text-sm font-medium text-marie-900">Prénoms <span class="text-or-600">*</span></label>
+          <input id="prenoms" name="prenoms" required maxlength="120" autocomplete="given-name"
+            class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition focus:border-marie-500 focus:bg-white focus:ring-4 focus:ring-marie-100" />
+        </div>
+
+        <fieldset class="sm:col-span-2">
+          <legend class="mb-1.5 block text-sm font-medium text-marie-900">Sexe <span class="text-or-600">*</span></legend>
+          <div class="grid grid-cols-2 gap-3">
+            <label class="group flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 transition has-[:checked]:border-marie-500 has-[:checked]:bg-marie-50 has-[:checked]:ring-4 has-[:checked]:ring-marie-100">
+              <input type="radio" name="sexe" value="F" required class="h-4 w-4 accent-marie-700" />
+              <span class="font-medium">Femme</span>
+            </label>
+            <label class="group flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 transition has-[:checked]:border-marie-500 has-[:checked]:bg-marie-50 has-[:checked]:ring-4 has-[:checked]:ring-marie-100">
+              <input type="radio" name="sexe" value="M" class="h-4 w-4 accent-marie-700" />
+              <span class="font-medium">Homme</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <div>
+          <label for="contact" class="mb-1.5 block text-sm font-medium text-marie-900">Contact <span class="text-or-600">*</span></label>
+          <input id="contact" name="contact" type="tel" required inputmode="tel" autocomplete="tel" placeholder="07 00 00 00 00" maxlength="25"
+            pattern="^\+?[0-9 .\-]{8,20}$"
+            class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition focus:border-marie-500 focus:bg-white focus:ring-4 focus:ring-marie-100" />
+        </div>
+        <div>
+          <label for="lieu" class="mb-1.5 block text-sm font-medium text-marie-900">Lieu d'habitation <span class="text-or-600">*</span></label>
+          <input id="lieu" name="lieu" required maxlength="100" placeholder="Ex : Koumassi Prodomo"
+            class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition focus:border-marie-500 focus:bg-white focus:ring-4 focus:ring-marie-100" />
+        </div>
+        <div>
+          <label for="profession" class="mb-1.5 block text-sm font-medium text-marie-900">Emploi ou profession <span class="text-or-600">*</span></label>
+          <input id="profession" name="profession" required maxlength="100"
+            class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition focus:border-marie-500 focus:bg-white focus:ring-4 focus:ring-marie-100" />
+        </div>
+        <div>
+          <label for="fonction" class="mb-1.5 block text-sm font-medium text-marie-900">Fonction</label>
+          <input id="fonction" name="fonction" maxlength="100" placeholder="Ex : Chorale, catéchiste…"
+            class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition focus:border-marie-500 focus:bg-white focus:ring-4 focus:ring-marie-100" />
+        </div>
+        <div>
+          <label for="statut" class="mb-1.5 block text-sm font-medium text-marie-900">Statut actuel <span class="text-or-600">*</span></label>
+          <select id="statut" name="statut" required
+            class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition focus:border-marie-500 focus:bg-white focus:ring-4 focus:ring-marie-100">
+            <option value="">Choisir…</option>
+            <option>Célibataire</option>
+            <option>Fiancé(e)</option>
+            <option>Marié(e)</option>
+            <option>Veuf / Veuve</option>
+            <option>Divorcé(e)</option>
+            <option>Religieux / Religieuse</option>
+            <option>Autre</option>
+          </select>
+        </div>
+        <div>
+          <label for="montant" class="mb-1.5 block text-sm font-medium text-marie-900">Montant souscrit <span class="text-or-600">*</span></label>
+          <div class="relative">
+            <input id="montant" name="montant" type="number" required min="100" step="1" inputmode="numeric" max="1000000000"
+              class="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pl-4 pr-16 outline-none transition focus:border-marie-500 focus:bg-white focus:ring-4 focus:ring-marie-100" />
+            <span class="pointer-events-none absolute inset-y-0 right-4 flex items-center text-sm font-semibold text-slate-400">FCFA</span>
+          </div>
+          <div class="mt-2 flex flex-wrap gap-2" aria-label="Montants suggérés">
+            <button type="button" data-amount="5000" class="rounded-full border border-marie-200 px-3 py-1 text-xs font-medium text-marie-800 transition hover:bg-marie-50">5 000</button>
+            <button type="button" data-amount="10000" class="rounded-full border border-marie-200 px-3 py-1 text-xs font-medium text-marie-800 transition hover:bg-marie-50">10 000</button>
+            <button type="button" data-amount="25000" class="rounded-full border border-marie-200 px-3 py-1 text-xs font-medium text-marie-800 transition hover:bg-marie-50">25 000</button>
+            <button type="button" data-amount="50000" class="rounded-full border border-marie-200 px-3 py-1 text-xs font-medium text-marie-800 transition hover:bg-marie-50">50 000</button>
+          </div>
+        </div>
+
+        <label class="flex items-start gap-3 text-sm text-slate-600 sm:col-span-2">
+          <input type="checkbox" name="consent" required class="mt-0.5 h-4 w-4 accent-marie-700" />
+          J'accepte que ces informations soient utilisées par la paroisse dans le cadre de cette souscription.
+        </label>
+
+        <p id="error" role="alert" class="hidden rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700 sm:col-span-2"></p>
+
+        <div class="sm:col-span-2">
+          <button id="submit" type="submit"
+            class="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-marie-900 to-marie-700 px-6 py-4 font-semibold text-white shadow-lg shadow-marie-900/20 transition hover:from-marie-800 hover:to-marie-600 focus:outline-none focus-visible:ring-4 focus-visible:ring-or-300 disabled:cursor-not-allowed disabled:opacity-60">
+            <span id="submit-label">Enregistrer ma souscription</span>
+            <svg id="spinner" class="hidden h-5 w-5 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-opacity=".25" stroke-width="4"/><path d="M22 12a10 10 0 0 1-10 10" stroke="currentColor" stroke-width="4"/></svg>
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Confirmation -->
+    <section id="success-card" class="print-card hidden rounded-3xl bg-white p-6 shadow-xl shadow-marie-900/10 ring-1 ring-marie-100 sm:p-10" aria-live="polite">
+      <div class="flex items-center justify-between gap-4 border-b border-marie-100 pb-6">
+        <img src="assets/logo-nda.png" alt="" class="h-16 w-16 object-contain" />
+        <div class="text-center">
+          <h2 class="font-serif text-2xl font-semibold text-marie-900 sm:text-3xl">Fiche de souscription</h2>
+          <p class="mt-1 text-sm font-semibold tracking-wide text-slate-600"><span id="ref-prefix"></span> <span id="ref-num" class="text-marie-800"></span></p>
+        </div>
+        <img src="assets/logo-annee-consacre.png" alt="" class="h-16 w-16 object-contain" />
+      </div>
+
+      <div class="mt-6 flex items-center gap-3 rounded-2xl bg-emerald-50 px-4 py-3 text-emerald-800 no-print">
+        <svg class="h-6 w-6 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+        <p class="text-sm font-medium">Votre souscription a bien été enregistrée. Conservez votre numéro.</p>
+      </div>
+
+      <dl id="recap" class="mt-6 divide-y divide-slate-100 text-sm"></dl>
+
+      <p class="mt-8 text-center font-serif text-lg italic text-marie-900">Merci pour votre engagement au service de votre paroisse. Dieu vous bénisse.</p>
+
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row no-print">
+        <button id="print" type="button" class="flex-1 rounded-xl border border-marie-200 px-6 py-3 font-semibold text-marie-800 transition hover:bg-marie-50">Imprimer / PDF</button>
+        <button id="again" type="button" class="flex-1 rounded-xl bg-marie-900 px-6 py-3 font-semibold text-white transition hover:bg-marie-800">Nouvelle souscription</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="no-print border-t border-marie-100 py-8 text-center text-xs text-slate-500">
+    © <span id="year"></span> Paroisse Notre-Dame de l'Assomption · Koumassi Prodomo
+  </footer>
+
+  <script type="module">
+    import { store, MODE, REF_PREFIX } from "./js/store.js";
+
+    const $ = (id) => document.getElementById(id);
+    const form = $("form");
+    const fcfa = new Intl.NumberFormat("fr-FR");
+
+    $("year").textContent = new Date().getFullYear();
+    if (MODE === "demo") $("demo-banner").classList.remove("hidden");
+    store.trackPresence("formulaire");
+
+    document.querySelectorAll("[data-amount]").forEach((b) =>
+      b.addEventListener("click", () => {
+        form.montant.value = b.dataset.amount;
+        form.montant.focus();
+      })
+    );
+
+    function showError(msg) {
+      $("error").textContent = msg;
+      $("error").classList.toggle("hidden", !msg);
+    }
+
+    function setLoading(on) {
+      $("submit").disabled = on;
+      $("spinner").classList.toggle("hidden", !on);
+      $("submit-label").textContent = on ? "Enregistrement…" : "Enregistrer ma souscription";
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      showError("");
+      if (!form.checkValidity()) {
+        const bad = form.querySelector(":invalid");
+        bad?.focus();
+        showError(bad?.name === "contact"
+          ? "Veuillez saisir un numéro de téléphone valide."
+          : bad?.name === "montant"
+          ? "Veuillez saisir un montant valide (minimum 100 FCFA)."
+          : "Veuillez remplir tous les champs obligatoires.");
+        return;
+      }
+
+      const fd = new FormData(form);
+      const clean = (k) => String(fd.get(k) || "").trim().replace(/\s+/g, " ");
+      const data = {
+        nom: clean("nom").toUpperCase(),
+        prenoms: clean("prenoms"),
+        sexe: fd.get("sexe"),
+        contact: clean("contact"),
+        lieu: clean("lieu"),
+        profession: clean("profession"),
+        fonction: clean("fonction"),
+        statut: clean("statut"),
+        montant: Math.round(Number(fd.get("montant"))),
+      };
+
+      setLoading(true);
+      try {
+        const numero = await store.submit(data);
+        showSuccess(numero, data);
+      } catch (err) {
+        console.error(err);
+        showError("L'enregistrement a échoué. Vérifiez votre connexion internet puis réessayez.");
+      } finally {
+        setLoading(false);
+      }
+    });
+
+    function showSuccess(numero, d) {
+      $("ref-prefix").textContent = REF_PREFIX;
+      $("ref-num").textContent = numero;
+      const rows = [
+        ["Nom", d.nom], ["Prénoms", d.prenoms], ["Sexe", d.sexe === "F" ? "Femme" : "Homme"],
+        ["Contact", d.contact], ["Lieu d'habitation", d.lieu], ["Emploi ou profession", d.profession],
+        ["Fonction", d.fonction || "—"], ["Statut actuel", d.statut], ["Montant souscrit", fcfa.format(d.montant) + " FCFA"],
+      ];
+      const dl = $("recap");
+      dl.replaceChildren(...rows.map(([k, v]) => {
+        const row = document.createElement("div");
+        row.className = "flex justify-between gap-4 py-3";
+        const dt = document.createElement("dt");
+        dt.className = "font-medium text-slate-500";
+        dt.textContent = k;
+        const dd = document.createElement("dd");
+        dd.className = "text-right font-semibold text-marie-900";
+        dd.textContent = v;
+        row.append(dt, dd);
+        return row;
+      }));
+      $("form-card").classList.add("hidden");
+      $("success-card").classList.remove("hidden");
+      $("success-card").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    $("print").addEventListener("click", () => window.print());
+    $("again").addEventListener("click", () => {
+      form.reset();
+      $("success-card").classList.add("hidden");
+      $("form-card").classList.remove("hidden");
+      form.nom.focus();
+    });
+  </script>
+</body>
+</html>
