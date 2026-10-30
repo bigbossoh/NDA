@@ -1,12 +1,11 @@
-// Configuration Firebase du projet.
-// Remplacez ces valeurs par celles de votre projet (Console Firebase > Paramètres du projet > Vos applications > Web).
-// Tant que les valeurs « VOTRE_... » restent en place, le site fonctionne en MODE DÉMO
-// (données stockées uniquement dans le navigateur, mot de passe admin : « admin »).
+// Configuration Firebase du projet (Console Firebase > Paramètres du projet > Vos applications > Web).
+// Ces clés ne sont pas secrètes : la sécurité repose sur firestore.rules.
 export const firebaseConfig = {
-  apiKey: "VOTRE_API_KEY",
-  authDomain: "VOTRE_PROJET.firebaseapp.com",
-  projectId: "VOTRE_PROJET",
-  storageBucket: "VOTRE_PROJET.appspot.com",
-  messagingSenderId: "VOTRE_SENDER_ID",
-  appId: "VOTRE_APP_ID",
+  apiKey: "AIzaSyCP39vJ66BfyxRuXAO_ws3EQHzrgO1vLxo",
+  authDomain: "ndacollect-b9d83.firebaseapp.com",
+  projectId: "ndacollect-b9d83",
+  storageBucket: "ndacollect-b9d83.firebasestorage.app",
+  messagingSenderId: "934572820317",
+  appId: "1:934572820317:web:b5e5f6fbc0e6da90a64ab4",
+  measurementId: "G-RD26ZHEJ2S",
 };
