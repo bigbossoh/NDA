@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>Affiche QR code · Souscription NDA</title>
+  <link rel="icon" href="assets/logo-nda.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <script src="js/tailwind-config.js"></script>
+  <style>
+    @page { size: A4 portrait; margin: 0; }
+    .sheet { width: 210mm; height: 297mm; }
+    @media screen and (max-width: 840px) {
+      .sheet { width: 100%; height: auto; aspect-ratio: 210 / 297; }
+    }
+    @media print {
+      body { background: #fff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .no-print { display: none !important; }
+      .sheet { box-shadow: none !important; margin: 0 !important; }
+    }
+  </style>
+</head>
+<body class="bg-slate-200 font-sans text-slate-800 antialiased">
+
+  <div class="no-print mx-auto flex max-w-[210mm] flex-wrap items-center justify-between gap-3 px-4 py-5">
+    <p class="text-sm text-slate-600">Affiche A4 à imprimer ou enregistrer en PDF.</p>
+    <div class="flex gap-2">
+      <a href="assets/qr-souscription.png" download class="rounded-xl border border-marie-300 bg-white px-4 py-2 text-sm font-semibold text-marie-800 hover:bg-marie-50">Télécharger le QR (PNG)</a>
+      <button onclick="window.print()" class="rounded-xl bg-marie-900 px-4 py-2 text-sm font-semibold text-white hover:bg-marie-800">Imprimer</button>
+    </div>
+  </div>
+
+  <main class="sheet mx-auto mb-10 flex flex-col overflow-hidden bg-white shadow-2xl">
+    <header class="flex flex-col items-center px-[8%] pb-[6%] pt-[7%] text-center text-white"
+      style="background: radial-gradient(120% 80% at 50% 0%, rgba(212,169,68,.25), transparent 60%), linear-gradient(180deg, #141c3b 0%, #1e2b5c 70%, #304494 100%);">
+      <div class="flex items-center gap-[6%]">
+        <img src="assets/logo-nda.png" alt="Logo de la Paroisse Notre-Dame de l'Assomption" class="h-[22mm] w-[22mm] rounded-full bg-white object-contain p-1" />
+        <img src="assets/logo-annee-consacre.png" alt="Logo Année du Consacré" class="h-[22mm] w-[22mm] rounded-full" />
+      </div>
+      <p class="mt-[5%] text-[3.2mm] font-semibold uppercase tracking-[0.35em] text-or-300">Année du Consacré · 2026 – 2027</p>
+      <h1 class="mt-[2%] font-serif text-[15mm] font-semibold leading-none">Fiche de souscription</h1>
+      <p class="mt-[3%] text-[4.2mm] text-marie-100">Paroisse Notre-Dame de l'Assomption · Koumassi Prodomo</p>
+    </header>
+
+    <section class="flex flex-1 flex-col items-center justify-center px-[10%] text-center">
+      <p class="font-serif text-[9mm] font-semibold text-marie-900">Scannez pour souscrire</p>
+      <div class="mt-[5%] rounded-[6mm] border-[1.5mm] border-or-400 p-[4mm]">
+        <img src="assets/qr-souscription.svg" alt="QR code vers le formulaire de souscription en ligne" class="h-[85mm] w-[85mm]" />
+      </div>
+      <ol class="mt-[6%] space-y-[2mm] text-left text-[4.4mm] text-slate-700">
+        <li><span class="mr-2 inline-flex h-[6.5mm] w-[6.5mm] items-center justify-center rounded-full bg-marie-900 text-[3.4mm] font-bold text-white">1</span>Ouvrez l'appareil photo de votre téléphone</li>
+        <li><span class="mr-2 inline-flex h-[6.5mm] w-[6.5mm] items-center justify-center rounded-full bg-marie-900 text-[3.4mm] font-bold text-white">2</span>Visez le QR code et touchez le lien</li>
+        <li><span class="mr-2 inline-flex h-[6.5mm] w-[6.5mm] items-center justify-center rounded-full bg-marie-900 text-[3.4mm] font-bold text-white">3</span>Remplissez et envoyez votre fiche</li>
+      </ol>
+      <p class="mt-[5%] text-[3.6mm] text-slate-500">ou rendez-vous sur</p>
+      <p class="text-[5mm] font-semibold text-marie-800">bigbossoh.github.io/NDA</p>
+    </section>
+
+    <footer class="border-t-[1mm] border-or-400 bg-marie-50 px-[8%] py-[5%] text-center">
+      <p class="font-serif text-[5.6mm] italic text-marie-900">Merci pour votre engagement au service de votre paroisse. Dieu vous bénisse.</p>
+    </footer>
+  </main>
+</body>
+</html>
